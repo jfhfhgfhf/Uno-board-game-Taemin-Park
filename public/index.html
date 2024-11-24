@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UNO Online</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="login-screen">
+        <h1>UNO Online</h1>
+        <div class="room-controls">
+            <input type="text" id="room-id" placeholder="방 코드 입력">
+            <button id="create-room">방 만들기</button>
+            <button id="join-room">방 참가하기</button>
+        </div>
+    </div>
+
+    <div id="game-screen" style="display: none;">
+        <div id="game-container">
+            <div id="game-area">
+                <div id="other-players"></div>
+                <div id="current-card"></div>
+                <div id="cards"></div>
+                <div id="game-controls">
+                    <button id="draw-card">카드 뽑기</button>
+                    <button id="uno-button" class="uno-button">UNO!</button>
+                </div>
+                <div id="color-picker" style="display: none;">
+                    <div class="color-picker-title">색상을 선택하세요</div>
+                    <div class="color-buttons">
+                        <button class="color-btn" data-color="red">빨강</button>
+                        <button class="color-btn" data-color="blue">파랑</button>
+                        <button class="color-btn" data-color="green">초록</button>
+                        <button class="color-btn" data-color="yellow">노랑</button>
+                    </div>
+                </div>
+            </div>
+            <div id="chat-container">
+                <div id="chat-messages"></div>
+                <div id="chat-input-area">
+                    <input type="text" id="chat-input" placeholder="메시지를 입력하세요...">
+                    <button id="chat-send">전송</button>
+                </div>
+            </div>
+        </div>
+        <div id="turn-info"></div>
+        <div id="room-info">
+            <h2>방 코드: <span id="current-room-code"></span></h2>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>

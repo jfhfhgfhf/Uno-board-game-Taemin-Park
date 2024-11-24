@@ -1,0 +1,607 @@
+*  {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#login-screen {
+    background: linear-gradient(135deg, #ff5555 0%, #0000ff 100%);
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    color: white;
+}
+
+#login-screen h1 {
+    font-size: 4rem;
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+    margin-bottom: 2rem;
+    font-family: 'Arial Black', sans-serif;
+    letter-spacing: 4px;
+}
+
+.room-controls {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.room-controls input {
+    background: rgba(255, 255, 255, 0.9);
+    border: none;
+    padding: 1rem;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.room-controls button {
+    background: #ffaa00;
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s;
+    width: 100%;
+    text-transform: uppercase;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.room-controls button:hover {
+    background: #cc8800;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.room-controls button:active {
+    transform: translateY(0);
+}
+
+input, button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 5px;
+}
+
+input {
+    border: 1px solid #ddd;
+}
+
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#game-screen {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+#game-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+#current-card-container {
+    text-align: center;
+}
+
+.card {
+    width: 120px;
+    height: 180px;
+    border-radius: 10px;
+    margin: 5px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.3s;
+    user-select: none;
+    position: relative;
+    border: 8px solid white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 100%);
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    width: 80%;
+    height: 80%;
+    background: inherit;
+    border-radius: 50%;
+    border: 4px solid white;
+    transform: rotate(-20deg);
+}
+
+.card::after {
+    content: attr(data-content);
+    position: relative;
+    z-index: 1;
+    font-family: 'Arial Black', sans-serif;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.card[data-content="skip"]::before,
+.card[data-content="reverse"]::before,
+.card[data-content="draw2"]::before,
+.card[data-content="wild"]::before,
+.card[data-content="wilddraw4"]::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 2.5em;
+    color: rgba(255, 255, 255, 0.9);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.card[data-content="skip"]::before {
+    content: "";
+    width: 60px;
+    height: 60px;
+    border: 6px solid white;
+    border-radius: 50%;
+    background: transparent;
+}
+
+.card[data-content="skip"]::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 80px;
+    height: 8px;
+    background: white;
+    transform: translate(-50%, -50%) rotate(45deg);
+    border-radius: 4px;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.card[data-content="reverse"]::before {
+    content: "";
+    width: 40px;
+    height: 40px;
+    border: 6px solid white;
+    border-radius: 50%;
+    border-right-color: transparent;
+    transform: translate(-50%, -50%) rotate(0deg);
+    animation: spin 2s linear infinite;
+}
+
+.card[data-content="reverse"]::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 75%;
+    width: 0;
+    height: 0;
+    border-left: 15px solid white;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    transform: translate(-50%, -50%);
+    filter: drop-shadow(2px 2px 2px rgba(0, 0, 0, 0.3));
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.card[data-content="draw2"]::before {
+    content: "+2";
+    font-family: 'Arial Black', sans-serif;
+    font-size: 2.5em;
+    font-weight: bold;
+    background: linear-gradient(45deg, #fff, #ddd);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.card[data-content="wild"]::before {
+    content: "★";
+    font-size: 3em;
+    animation: rainbow 3s linear infinite;
+}
+
+.card[data-content="wilddraw4"]::before {
+    content: "+4";
+    font-family: 'Arial Black', sans-serif;
+    font-size: 2.5em;
+    font-weight: bold;
+    animation: rainbow 3s linear infinite;
+}
+
+@keyframes rainbow {
+    0% { color: #ff0000; }
+    17% { color: #ff8800; }
+    33% { color: #ffff00; }
+    50% { color: #00ff00; }
+    67% { color: #0000ff; }
+    83% { color: #8800ff; }
+    100% { color: #ff0000; }
+}
+
+.card[data-content="skip"] [data-content],
+.card[data-content="reverse"] [data-content],
+.card[data-content="draw2"] [data-content],
+.card[data-content="wild"] [data-content],
+.card[data-content="wilddraw4"] [data-content] {
+    display: none;
+}
+
+.card.red { 
+    background-color: #ff0000;
+    background-image: linear-gradient(135deg, #ff5555 0%, #cc0000 100%);
+}
+.card.blue { 
+    background-color: #0000ff;
+    background-image: linear-gradient(135deg, #5555ff 0%, #0000cc 100%);
+}
+.card.green { 
+    background-color: #00aa00;
+    background-image: linear-gradient(135deg, #55aa55 0%, #007700 100%);
+}
+.card.yellow { 
+    background-color: #ffaa00;
+    background-image: linear-gradient(135deg, #ffcc00 0%, #cc8800 100%);
+}
+.card.wild { 
+    background: linear-gradient(45deg, 
+        #ff0000 0%, 
+        #ffaa00 25%, 
+        #00aa00 50%, 
+        #0000ff 75%
+    );
+    transition: all 0.5s ease;
+}
+
+.card.wild.selected-red {
+    background: linear-gradient(135deg, #ff5555 0%, #cc0000 100%);
+}
+
+.card.wild.selected-blue {
+    background: linear-gradient(135deg, #5555ff 0%, #0000cc 100%);
+}
+
+.card.wild.selected-green {
+    background: linear-gradient(135deg, #55aa55 0%, #007700 100%);
+}
+
+.card.wild.selected-yellow {
+    background: linear-gradient(135deg, #ffcc00 0%, #cc8800 100%);
+}
+
+.card:hover {
+    transform: translateY(-10px) rotate(5deg);
+}
+
+#other-players {
+    display: flex;
+    justify-content: space-around;
+    margin: 2rem 0;
+}
+
+.player {
+    text-align: center;
+    padding: 1rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    min-width: 150px;
+}
+
+.player.current-turn {
+    background: #e8f5e9;
+    box-shadow: 0 0 15px rgba(0, 170, 0, 0.3);
+    transform: scale(1.05);
+}
+
+.player .card-count {
+    margin-top: 0.5rem;
+    font-weight: bold;
+    color: #666;
+}
+
+#player-hand {
+    background: white;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-top: 2rem;
+}
+
+#cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+#game-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.game-message {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%) translateY(-100px);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    z-index: 1000;
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.game-message.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+}
+
+#draw-card {
+    background: #4CAF50;
+    color: white;
+    font-size: 1.2rem;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#draw-card:hover {
+    background: #45a049;
+    transform: translateY(-2px);
+}
+
+#draw-card:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+#color-picker {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 255, 255, 0.95);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+}
+
+.color-picker-title {
+    text-align: center;
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    color: #333;
+    font-weight: bold;
+}
+
+.color-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.color-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.color-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.color-btn[data-color="red"] { background-color: #ff5555; }
+.color-btn[data-color="blue"] { background-color: #5555ff; }
+.color-btn[data-color="green"] { background-color: #55aa55; }
+.color-btn[data-color="yellow"] { background-color: #ffaa00; }
+
+.preview-card {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+}
+
+#turn-info {
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 1rem;
+    border-radius: 10px;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+#room-info {
+    text-align: center;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#room-info h2 {
+    color: #333;
+    margin: 0;
+}
+
+.uno-button {
+    background: linear-gradient(135deg, #ff0000, #ff6b00);
+    color: white;
+    font-size: 1.5rem;
+    font-weight: bold;
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 4px 15px rgba(255, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    margin: 0 1rem;
+}
+
+.uno-button:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 6px 20px rgba(255, 0, 0, 0.4);
+    background: linear-gradient(135deg, #ff1a1a, #ff8533);
+}
+
+.uno-button:active {
+    transform: translateY(1px);
+}
+
+.uno-button:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+#game-container {
+    display: flex;
+    gap: 20px;
+    margin: 20px;
+    height: calc(100vh - 100px);
+}
+
+#game-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+#chat-container {
+    width: 300px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#chat-messages {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chat-message {
+    padding: 8px 12px;
+    border-radius: 15px;
+    max-width: 80%;
+    word-break: break-word;
+}
+
+.chat-message.my-message {
+    align-self: flex-end;
+    background: #4CAF50;
+    color: white;
+}
+
+.chat-message.other-message {
+    align-self: flex-start;
+    background: #f1f1f1;
+    color: #333;
+}
+
+.chat-message .sender {
+    font-size: 0.8em;
+    opacity: 0.7;
+    margin-bottom: 3px;
+}
+
+#chat-input-area {
+    display: flex;
+    padding: 15px;
+    gap: 10px;
+    background: #f8f8f8;
+    border-top: 1px solid #eee;
+}
+
+#chat-input {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    outline: none;
+    font-size: 1em;
+}
+
+#chat-input:focus {
+    border-color: #4CAF50;
+}
+
+#chat-send {
+    padding: 8px 15px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#chat-send:hover {
+    background: #45a049;
+    transform: translateY(-2px);
+}
+
+#chat-send:active {
+    transform: translateY(0);
+}
